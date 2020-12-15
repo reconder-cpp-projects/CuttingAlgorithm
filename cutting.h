@@ -34,11 +34,11 @@ struct Recta {
 
 
 
-        if (topy + y > sheet.y)
+        if (topy + y <= sheet.y)
         {
-            pos = {-100, -100};
-            return;
-        }
+
+
+
 
         int lx = leftx;
         int ty = topy;
@@ -63,12 +63,14 @@ struct Recta {
             nextTopy = topy + y;
         }
         pos = { lx, ty };
-        Draw(sheet, sheetLayout, lx, ty);
+        if (ty + y <= sheet.y) {Draw(sheet, sheetLayout, lx, ty);}
+        else { pos = {-100, -100};}
         //QTextStream out(stdout);
         //out << topy << ", " << nextTopy << Qt::endl;
 
         leftx = lx + x;
-
+        }
+        else { pos = {-100, -100};}
 
     }
     void Draw(Recta& sheet, vector<bool>& sheetLayout, int ltx, int lty)
@@ -109,10 +111,10 @@ private:
         rectangles[0].pos = { leftx, topy };
         leftx = rectangles[0].x;
         int nextTopy = rectangles[0].y;
-
+        QTextStream out(stdout);
         for (int i = 1; i < rectangles.size(); i++)
         {
-
+            out << i << endl;
             rectangles[i].Place(sheet, sheetLayout, leftx, topy, nextTopy);
             if (rectangles[i].pos.first == -100) {return;}
 
